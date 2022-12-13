@@ -214,7 +214,7 @@ export class Mempool {
     for (const rbfTransaction in rbfTransactions) {
       if (this.mempoolCache[rbfTransaction]) {
         // Store replaced transactions
-        rbfCache.add(this.mempoolCache[rbfTransaction], rbfTransactions[rbfTransaction].txid);
+        rbfCache.add(this.mempoolCache[rbfTransaction], rbfTransactions[rbfTransaction]);
         // Erase the replaced transactions from the local mempool
         delete this.mempoolCache[rbfTransaction];
       }
