@@ -250,6 +250,38 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    this.altTxSubscription = this.checkAltBackend$
+    .pipe(
+      switchMap((txId) =>
+        this.apiService
+          .getAltTransaction$(txId)
+          .pipe(
+            catchError((e) => {
+              return of(null);
+            })
+          )
+      )
+    ).subscribe((tx) => {
+      if (!tx) {
+        this.altTx = null;
+        return;
+      }
+
+      this.altTx = tx;
+      if (tx.fee === undefined) {
+        this.altTx.fee = 0;
+      }
+      this.altTx.feePerVsize = tx.fee / (tx.weight / 4);
+      if (!this.tx) {
+        this.tx = tx;
+        this.isLoadingTx = false;
+        this.error = undefined;
+        this.waitingForTransaction = false;
+        this.graphExpanded = false;
+        this.setupGraph();
+      }
+    });
+
     this.subscription = this.route.paramMap
       .pipe(
         switchMap((params: ParamMap) => {
