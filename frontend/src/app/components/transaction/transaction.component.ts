@@ -44,6 +44,7 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
   fetchCachedTxSubscription: Subscription;
   txReplacedSubscription: Subscription;
   altTxSubscription: Subscription;
+  txRbfInfoSubscription: Subscription;
   blocksSubscription: Subscription;
   queryParamsSubscription: Subscription;
   urlFragmentSubscription: Subscription;
@@ -216,6 +217,11 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (!this.tx?.status?.confirmed) {
           this.fetchRbfHistory$.next(this.tx.txid);
+          this.txRbfInfoSubscription = this.stateService.txRbfInfo$.subscribe((rbfInfo) => {
+            if (this.tx) {
+              this.rbfInfo = rbfInfo;
+            }
+          });
         }
       }
     });
@@ -440,6 +446,12 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    this.txRbfInfoSubscription = this.stateService.txRbfInfo$.subscribe((rbfInfo) => {
+      if (this.tx) {
+        this.rbfInfo = rbfInfo;
+      }
+    });
+
     this.queryParamsSubscription = this.route.queryParams.subscribe((params) => {
       if (params.showFlow === 'false') {
         this.overrideFlowPreference = false;
@@ -579,6 +591,7 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.fetchCachedTxSubscription.unsubscribe();
     this.altTxSubscription?.unsubscribe();
     this.txReplacedSubscription.unsubscribe();
+    this.txRbfInfoSubscription.unsubscribe();
     this.blocksSubscription.unsubscribe();
     this.queryParamsSubscription.unsubscribe();
     this.flowPrefSubscription.unsubscribe();
