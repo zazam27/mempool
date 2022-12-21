@@ -60,6 +60,7 @@ import { FeesBoxComponent } from '../components/fees-box/fees-box.component';
 import { DifficultyComponent } from '../components/difficulty/difficulty.component';
 import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service.component';
 import { RbfTimelineComponent } from '../components/rbf-timeline/rbf-timeline.component';
+import { RbfTimelineTooltipComponent } from '../components/rbf-timeline/rbf-timeline-tooltip.component';
 import { TxBowtieGraphComponent } from '../components/tx-bowtie-graph/tx-bowtie-graph.component';
 import { TxBowtieGraphTooltipComponent } from '../components/tx-bowtie-graph-tooltip/tx-bowtie-graph-tooltip.component';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
@@ -136,6 +137,7 @@ import { GeolocationComponent } from '../shared/components/geolocation/geolocati
     FeesBoxComponent,
     DifficultyComponent,
     RbfTimelineComponent,
+    RbfTimelineTooltipComponent,
     TxBowtieGraphComponent,
     TxBowtieGraphTooltipComponent,
     TermsOfServiceComponent,
@@ -239,6 +241,7 @@ import { GeolocationComponent } from '../shared/components/geolocation/geolocati
     FeesBoxComponent,
     DifficultyComponent,
     RbfTimelineComponent,
+    RbfTimelineTooltipComponent,
     TxBowtieGraphComponent,
     TxBowtieGraphTooltipComponent,
     TermsOfServiceComponent,

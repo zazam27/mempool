@@ -154,11 +154,13 @@ class AltMempool extends Mempool {
     return this.vBytesPerSecond;
   }
 
-  public handleRbfTransactions(rbfTransactions: { [txid: string]: TransactionExtended; }): void {
+  public handleRbfTransactions(rbfTransactions: { [txid: string]: TransactionExtended[]; }): void {
     for (const rbfTransaction in rbfTransactions) {
       if (this.mempoolCache[rbfTransaction]) {
         // Erase the replaced transactions from the local mempool
-        delete this.mempoolCache[rbfTransaction];
+        for (const replaced of rbfTransactions[rbfTransaction]) {
+          delete this.mempoolCache[replaced.txid];
+        }
       }
     }
   }
