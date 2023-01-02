@@ -8,7 +8,6 @@ import { isIP } from 'net';
 import { Common } from '../../../api/common';
 import channelsApi from '../../../api/explorer/channels.api';
 import nodesApi from '../../../api/explorer/nodes.api';
-import { ResultSetHeader } from 'mysql2';
 
 const fsPromises = promises;
 

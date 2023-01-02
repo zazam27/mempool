@@ -4,7 +4,7 @@ import logger from '../logger';
 import { Common } from './common';
 
 class DatabaseMigration {
-  private static currentVersion = 49;
+  private static currentVersion = 51;
   private queryTimeout = 3600_000;
   private statisticsAddedIndexed = false;
   private uniqueLogs: string[] = [];
@@ -59,8 +59,8 @@ class DatabaseMigration {
 
     if (databaseSchemaVersion <= 2) {
       // Disable some spam logs when they're not relevant
-      this.uniqueLogs.push(this.blocksTruncatedMessage);
-      this.uniqueLogs.push(this.hashratesTruncatedMessage);
+      this.uniqueLog(logger.notice, this.blocksTruncatedMessage);
+      this.uniqueLog(logger.notice, this.hashratesTruncatedMessage);
     }
 
     logger.debug('MIGRATIONS: Current state.schema_version ' + databaseSchemaVersion);
@@ -441,6 +441,20 @@ class DatabaseMigration {
     if (databaseSchemaVersion < 49 && isBitcoin === true) {
       await this.$executeQuery('TRUNCATE TABLE `blocks_audits`');
       await this.updateToSchemaVersion(49);
+    }
+
+    if (databaseSchemaVersion < 50) {
+      await this.$executeQuery('ALTER TABLE pools ADD unique_id int NOT NULL DEFAULT -1');
+      await this.updateToSchemaVersion(50);
+    }
+
+    if (databaseSchemaVersion < 51) {
+      await this.$executeQuery('TRUNCATE TABLE `blocks`');
+      this.uniqueLog(logger.notice, this.blocksTruncatedMessage);
+      await this.$executeQuery('DELETE FROM `pools`');
+      await this.$executeQuery('ALTER TABLE pools AUTO_INCREMENT = 1');
+      this.uniqueLog(logger.notice, '`pools` table has been truncated`');
+      await this.updateToSchemaVersion(51);
     }
   }
 
