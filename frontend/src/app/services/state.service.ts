@@ -118,6 +118,7 @@ export class StateService {
   blockScrolling$: Subject<boolean> = new Subject<boolean>();
   timeLtr: BehaviorSubject<boolean>;
   hideFlow: BehaviorSubject<boolean>;
+  fiatCurrency$: BehaviorSubject<string>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -177,6 +178,9 @@ export class StateService {
         this.storageService.removeItem('flow-preference');
       }
     });
+
+    const fiatPreference = this.storageService.getValue('fiat-preference');
+    this.fiatCurrency$ = new BehaviorSubject<string>(fiatPreference || 'USD');
   }
 
   setNetworkBasedonUrl(url: string) {
